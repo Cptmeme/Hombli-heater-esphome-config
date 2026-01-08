@@ -6,9 +6,6 @@ esphome:
       - delay: 5s
       # 1. Wake up the device (V0 Handshake)
       - script.execute: tasmota_fix
-      - select.set:
-          id: temp_unit
-          option: "Celsius"
 
 esp32:
   board: esp32-c6-devkitc-1
@@ -194,19 +191,6 @@ select:
           if (x == "Eco") val = 2;
           
           std::vector<uint8_t> cmd = {0x55, 0xAA, 0x00, 0x06, 0x00, 0x05, 0x04, 0x04, 0x00, 0x01, (uint8_t)val};
-          uint8_t cs = 0; for(int i=0; i<cmd.size(); i++) cs += cmd[i]; cmd.push_back(cs);
-          id(uart_bus).write_array(cmd.data(), cmd.size());
-
-  - platform: template
-    name: "Thermostat Unit"
-    id: temp_unit
-    optimistic: true
-    options: ["Celsius", "Fahrenheit"]
-    set_action:
-      - lambda: |
-          // DP 103 Write (Enum) - assuming 103 is Unit
-          int val = (x == "Fahrenheit") ? 1 : 0;
-          std::vector<uint8_t> cmd = {0x55, 0xAA, 0x00, 0x06, 0x00, 0x05, 103, 0x04, 0x00, 0x01, (uint8_t)val};
           uint8_t cs = 0; for(int i=0; i<cmd.size(); i++) cs += cmd[i]; cmd.push_back(cs);
           id(uart_bus).write_array(cmd.data(), cmd.size());
 
