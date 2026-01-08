@@ -11,8 +11,6 @@ This specific heater uses a "Hybrid" TuyaMCU protocol that is incompatible with 
 3.  **Connection Reset:** If the MCU receives standard Tuya heartbeat packets repeatedly, it resets the connection, stopping data updates (temperature/power) from being reported.
 
 ## 🚀 The Solution: "Raw UART Driver"
-This configuration uses a **Pure YAML Custom Driver** approach.
-* **No External Dependencies:** No `.h` files or custom components required.
 * **Direct UART Parsing:** We read raw hex bytes directly from the UART bus using a lambda function.
 * **Manual Handshake:** A script runs *once* at boot to wake the device up (`tasmota_fix`).
 * **Passive Polling:** A lightweight poll loop (`0x08` Query) keeps the connection alive without triggering a reset.
